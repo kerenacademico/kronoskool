@@ -75,6 +75,7 @@ export interface MedicalAuditLog {
   studentName: string;
   documentNumber: string;
   accessedBy?: string;
+  role?: string;
   reason: string;
   accessedAt: string;
 }
