@@ -180,8 +180,7 @@ export default function StudentEnrollmentModal({
       grade: selectedGroup.name,
       guardianName: guardianName.trim(),
       guardianPhone: guardianPhone.trim(),
-      guardianEmail:
-        guardianEmail.trim() || "acudiente@kronoskool.edu.co",
+      guardianEmail: guardianEmail.trim() || "acudiente@kronoskool.edu.co",
       address: address.trim(),
       lateCount: studentToEdit?.lateCount ?? 0,
       absentCount: studentToEdit?.absentCount ?? 0,
@@ -219,16 +218,18 @@ export default function StudentEnrollmentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs overflow-y-auto">
-      <div className="w-full max-w-2xl rounded-3xl border border-slate-200 bg-white p-6 text-[#1E293B] shadow-xl my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 p-3 sm:p-4 backdrop-blur-xs">
+      <div className="mx-auto my-2 sm:my-6 w-full max-w-2xl rounded-3xl border border-slate-200 bg-white p-4 sm:p-6 text-[#1E293B] shadow-xl">
         <div className="flex items-center justify-between border-b border-slate-100 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#312E81] text-cyan-300">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#312E81] text-cyan-300">
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-extrabold">
-                {studentToEdit ? "Editar matrícula de estudiante" : "Matricular estudiante"}
+              <h2 className="text-sm sm:text-base font-extrabold">
+                {studentToEdit
+                  ? "Editar matrícula de estudiante"
+                  : "Matricular estudiante"}
               </h2>
               <p className="text-xs text-slate-500">
                 Datos del alumno, acudiente, emergencia médica y huella obligatoria.
@@ -239,13 +240,14 @@ export default function StudentEnrollmentModal({
           <button
             type="button"
             onClick={onClose}
+            aria-label="Cerrar modal"
             className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form onSubmit={(e) => void handleSubmit(e)} className="mt-5 space-y-5 text-xs">
+        <form onSubmit={(e) => void handleSubmit(e)} className="mt-4 space-y-5 text-xs">
           {errorMsg && (
             <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 font-semibold text-red-800">
               <ShieldAlert className="h-4 w-4 shrink-0 text-red-600" />
@@ -253,7 +255,6 @@ export default function StudentEnrollmentModal({
             </div>
           )}
 
-          {/* Datos del estudiante */}
           <div className="space-y-3">
             <p className="font-extrabold uppercase tracking-wider text-[11px] text-[#312E81]">
               1. Datos del estudiante
@@ -325,7 +326,6 @@ export default function StudentEnrollmentModal({
             </div>
           </div>
 
-          {/* Acudiente y dirección */}
           <div className="space-y-3 border-t border-slate-100 pt-4">
             <p className="font-extrabold uppercase tracking-wider text-[11px] text-[#312E81]">
               2. Acudiente y dirección
@@ -377,7 +377,6 @@ export default function StudentEnrollmentModal({
             </div>
           </div>
 
-          {/* Emergencia médica */}
           <div className="space-y-3 border-t border-slate-100 pt-4">
             <div className="flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[11px] text-[#F97316]">
               <HeartPulse className="h-3.5 w-3.5" />
@@ -434,7 +433,6 @@ export default function StudentEnrollmentModal({
             </div>
           </div>
 
-          {/* Huella obligatoria */}
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50/70 p-4 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#312E81] text-cyan-300">
