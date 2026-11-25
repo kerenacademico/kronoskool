@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KronosKool
 
-## Getting Started
+Plataforma web (MVP) para colegios enfocada en agilizar el registro de asistencia biométrica, prevenir el ausentismo mediante un **Semáforo de Bienestar** y ofrecer acceso rápido y auditado a la **Ficha Médica de Emergencia** de los estudiantes.
 
-First, run the development server:
+## Problema que resuelve
+* **Pérdida de minutos de clase:** el llamado a lista manual consume tiempo valioso en cada sesión y facilita errores u omisiones.
+* **Alertas tardías:** cuando un estudiante acumula llegadas tarde o faltas, la información a veces no llega a tiempo al docente, al acudiente o a orientación.
+* **Emergencias de salud sin información inmediata:** ante un desmayo, crisis asmática, convulsión o reacción alérgica, contar con alergias, medicamentos, RH, protocolo y contactos de emergencia accesibles por documento —con trazabilidad— ayuda a responder con mayor rapidez.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Funcionalidades del MVP
+* **Control de asistencia en aula:** simulación de entrada con evaluación automática de puntualidad (`PRESENTE`, `TARDE`, `INASISTENCIA`, `EXCUSADA`) y contador de *"Tiempo de clase salvado"*.
+* **Alertas automáticas escalonadas:** notificaciones y avisos según umbrales de retardos e inasistencias.
+* **Justificación en 2 clics:** modal rápido para registrar motivos de inasistencia o retardo.
+* **Semáforo de Bienestar Estudiantil:** clasificación preventiva (`Estable`, `Preventivo`, `Alerta Alta`) para detectar patrones de ausentismo o retardos.
+* **Ficha Médica y Modo Emergencia:** edición de datos críticos de salud y consulta rápida por número de documento con registro de auditoría (motivo, usuario y hora).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Privacidad y enfoque en Colombia (Ley 1581 de 2012)
+* Los datos de menores, biometría y salud se consideran sensibles. El diseño contempla **no almacenar imágenes de rostros ni huellas crudas**, trabajar con plantillas/tokens encriptados y mantener un **registro de auditoría** cada vez que se consulta una ficha médica.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack tecnológico
+* **Next.js (App Router)** + **React** + **TypeScript**
+* **Tailwind CSS**
+* **Lucide React**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Cómo ejecutarlo en local
+1. Instala las dependencias:
+   ```bash
+   npm install
