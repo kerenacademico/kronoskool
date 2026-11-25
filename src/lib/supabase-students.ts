@@ -41,6 +41,7 @@ interface StudentRow {
   biometric_method: BiometricMethod | null;
   check_in_time: string | null;
   minutes_after_start: number | null;
+  webauthn_credential_id?: string | null;
   medical: MedicalEmergencyProfile;
 }
 
@@ -62,6 +63,7 @@ function mapRowToStudent(row: StudentRow): Student {
     biometricMethod: row.biometric_method ?? undefined,
     checkInTime: row.check_in_time ?? undefined,
     minutesAfterStart: row.minutes_after_start ?? 0,
+    webauthnCredentialId: row.webauthn_credential_id ?? undefined,
     medical: row.medical,
   };
 }
@@ -74,16 +76,17 @@ function mapStudentToRow(student: Student) {
     document_type: student.documentType,
     document_number: student.documentNumber,
     grade: student.grade,
-    guardian_name: student.guardianName,
-    guardian_phone: student.guardianPhone,
+    guardian_name: student.guardianName ?? "",
+    guardian_phone: student.guardianPhone ?? "",
     guardian_email: student.guardianEmail,
-    address: student.address,
+    address: student.address ?? "",
     late_count: student.lateCount,
     absent_count: student.absentCount,
     today_status: student.todayStatus ?? null,
     biometric_method: student.biometricMethod ?? null,
     check_in_time: student.checkInTime ?? null,
     minutes_after_start: student.minutesAfterStart ?? 0,
+    webauthn_credential_id: student.webauthnCredentialId ?? null,
     medical: student.medical,
   };
 }
@@ -132,18 +135,30 @@ export async function fetchAllStudentsFromSupabase(): Promise<Student[]> {
 
 export async function upsertStudentInSupabase(student: Student): Promise<void> {
   const supabase = getSupabaseClient();
-  if (!supabase) return;
+  if (!supabase) {
+    throw new Error(
+      "No hay conexión configurada con Supabase (revisa NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY en Vercel)."
+    );
+  }
 
-  await supabase
+  const { error } = await supabase
     .from("students")
     .upsert(mapStudentToRow(student), { onConflict: "id" });
+
+  if (error) {
+    console.error("Error guardando estudiante en Supabase:", error);
+    throw new Error(`Supabase rechazó el guardado: ${error.message}`);
+  }
 }
 
 export async function deleteStudentFromSupabase(studentId: string): Promise<void> {
   const supabase = getSupabaseClient();
   if (!supabase) return;
 
-  await supabase.from("students").delete().eq("id", studentId);
+  const { error } = await supabase.from("students").delete().eq("id", studentId);
+  if (error) {
+    console.error("Error eliminando estudiante de Supabase:", error.message);
+  }
 }
 
 export async function updateStudentAttendanceInSupabase(
@@ -152,7 +167,7 @@ export async function updateStudentAttendanceInSupabase(
   const supabase = getSupabaseClient();
   if (!supabase) return;
 
-  await supabase
+  const { error } = await supabase
     .from("students")
     .update({
       today_status: student.todayStatus ?? null,
@@ -163,6 +178,10 @@ export async function updateStudentAttendanceInSupabase(
       absent_count: student.absentCount,
     })
     .eq("id", student.id);
+
+  if (error) {
+    console.error("Error actualizando asistencia en Supabase:", error.message);
+  }
 }
 
 export async function updateStudentMedicalInSupabase(
@@ -172,7 +191,14 @@ export async function updateStudentMedicalInSupabase(
   const supabase = getSupabaseClient();
   if (!supabase) return;
 
-  await supabase.from("students").update({ medical }).eq("id", studentId);
+  const { error } = await supabase
+    .from("students")
+    .update({ medical })
+    .eq("id", studentId);
+
+  if (error) {
+    console.error("Error actualizando datos médicos en Supabase:", error.message);
+  }
 }
 
 export async function linkWebAuthnCredentialToStudent(
@@ -182,10 +208,14 @@ export async function linkWebAuthnCredentialToStudent(
   const supabase = getSupabaseClient();
   if (!supabase) return;
 
-  await supabase
+  const { error } = await supabase
     .from("students")
     .update({ webauthn_credential_id: credentialIdBase64 })
     .eq("id", studentId);
+
+  if (error) {
+    console.error("Error vinculando huella en Supabase:", error.message);
+  }
 }
 
 export async function findStudentByWebAuthnCredential(

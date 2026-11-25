@@ -16,7 +16,6 @@ import {
   enrollFingerprintForStudent,
   isWebAuthnFingerprintAvailable,
 } from "@/lib/webauthn-fingerprint";
-import { linkWebAuthnCredentialToStudent } from "@/lib/supabase-students";
 
 interface StudentEnrollmentModalProps {
   studentToEdit: Student | null;
@@ -51,6 +50,7 @@ export default function StudentEnrollmentModal({
   const [medicationsText, setMedicationsText] = useState("");
   const [emergencyInstructions, setEmergencyInstructions] = useState("");
 
+  const [credentialId, setCredentialId] = useState<string | undefined>(undefined);
   const [fingerprintLinked, setFingerprintLinked] = useState(false);
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -77,6 +77,7 @@ export default function StudentEnrollmentModal({
       setConditionsText((studentToEdit.medical.medicalConditions ?? []).join(", "));
       setMedicationsText((studentToEdit.medical.medications ?? []).join(", "));
       setEmergencyInstructions(studentToEdit.medical.emergencyInstructions ?? "");
+      setCredentialId(studentToEdit.webauthnCredentialId);
       setFingerprintLinked(true);
     } else {
       setFirstName("");
@@ -94,6 +95,7 @@ export default function StudentEnrollmentModal({
       setConditionsText("");
       setMedicationsText("");
       setEmergencyInstructions("");
+      setCredentialId(undefined);
       setFingerprintLinked(false);
     }
   }, [isOpen, studentToEdit, defaultGroupId]);
@@ -125,13 +127,13 @@ export default function StudentEnrollmentModal({
         fullName,
         documentNumber.trim()
       );
-      await linkWebAuthnCredentialToStudent(studentId, record.credentialIdBase64);
+      setCredentialId(record.credentialIdBase64);
       setFingerprintLinked(true);
     } catch (err) {
       setErrorMsg(
         err instanceof Error
           ? err.message
-          : "No se pudo capturar la huella en el sensor del PC."
+          : "No se pudo capturar la huella en el sensor del dispositivo."
       );
     } finally {
       setIsEnrolling(false);
@@ -160,7 +162,7 @@ export default function StudentEnrollmentModal({
     }
     if (!fingerprintLinked) {
       setErrorMsg(
-        "Es obligatorio registrar la huella del estudiante en el sensor del PC antes de guardar la matrícula."
+        "Es obligatorio registrar la huella del estudiante antes de guardar la matrícula."
       );
       return;
     }
@@ -188,6 +190,7 @@ export default function StudentEnrollmentModal({
       biometricMethod: studentToEdit?.biometricMethod ?? "FINGERPRINT",
       checkInTime: studentToEdit?.checkInTime,
       minutesAfterStart: studentToEdit?.minutesAfterStart ?? 0,
+      webauthnCredentialId: credentialId,
       medical: {
         bloodType,
         epsName: epsName.trim() || "No especificada",
@@ -212,6 +215,12 @@ export default function StudentEnrollmentModal({
     try {
       await onSaveStudent(updatedStudent, !studentToEdit);
       onClose();
+    } catch (err) {
+      setErrorMsg(
+        err instanceof Error
+          ? err.message
+          : "No se pudo guardar el estudiante en Supabase."
+      );
     } finally {
       setIsSaving(false);
     }
@@ -440,11 +449,11 @@ export default function StudentEnrollmentModal({
               </div>
               <div>
                 <p className="font-extrabold text-[#312E81]">
-                  4. Huella biométrica en el sensor del PC (Obligatoria) *
+                  4. Huella biométrica del estudiante (Obligatoria) *
                 </p>
                 <p className="text-[11px] text-slate-600">
                   {fingerprintLinked
-                    ? "Huella capturada y vinculada a este estudiante para el kiosco."
+                    ? "Huella capturada y lista para guardarse con esta matrícula."
                     : "El alumno debe registrar su huella en la matrícula para poder marcar asistencia en el kiosco."}
                 </p>
               </div>

@@ -56,6 +56,7 @@ export interface Student {
   biometricMethod?: BiometricMethod;
   checkInTime?: string;
   minutesAfterStart?: number;
+  webauthnCredentialId?: string;
   medical: MedicalEmergencyProfile;
 }
 
