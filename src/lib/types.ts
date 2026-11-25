@@ -1,6 +1,17 @@
 // src/lib/types.ts
+
 export type AttendanceStatus = "PRESENT" | "LATE" | "ABSENT" | "EXCUSED";
+
 export type BiometricMethod = "FINGERPRINT" | "FACE";
+
+export type AlertTargetRole = "GUARDIAN" | "TEACHER" | "ADMIN_SCHOOL" | "STUDENT";
+
+export type AlertChannel =
+  | "EMAIL"
+  | "WHATSAPP"
+  | "DASHBOARD"
+  | "IN_APP"
+  | "STUDENT";
 
 export interface ClassGroup {
   id: string;
@@ -35,10 +46,10 @@ export interface Student {
   documentType: "TI" | "CC" | "NUIP";
   documentNumber: string;
   grade: string;
-  guardianName: string;
-  guardianPhone: string;
+  guardianName?: string;
+  guardianPhone?: string;
   guardianEmail: string;
-  address: string;
+  address?: string;
   lateCount: number;
   absentCount: number;
   todayStatus?: AttendanceStatus;
@@ -52,8 +63,8 @@ export interface AlertEvent {
   id: string;
   studentId: string;
   studentName: string;
-  targetRole: "GUARDIAN" | "TEACHER" | "ADMIN_SCHOOL";
-  channel: "EMAIL" | "WHATSAPP" | "DASHBOARD";
+  targetRole: AlertTargetRole | string;
+  channel: AlertChannel | string;
   message: string;
   createdAt: string;
 }
