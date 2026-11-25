@@ -85,7 +85,7 @@ export default function BiometricKioskPage() {
         if (typeof parsed.minutesSaved === "number") setMinutesSaved(parsed.minutesSaved);
       }
     } catch {
-      // Ignorar
+      // Ignorar errores de almacenamiento local
     }
 
     void fetchAllStudentsFromSupabase().then((dbStudents) => {
@@ -223,7 +223,6 @@ export default function BiometricKioskPage() {
     }
   }, [students, activeGroup, isGroupOpen, startTime, graceMinutes, scheduleAutoReset]);
 
-  // Escucha automática continua del sensor apenas se abre el kiosco y cuando vuelve a estar libre
   useEffect(() => {
     if (!isWebAuthnFingerprintAvailable() || !isGroupOpen || resultBanner) return;
 
@@ -236,15 +235,15 @@ export default function BiometricKioskPage() {
 
   return (
     <div className="min-h-screen bg-[#F4F7FA] text-[#1E293B] flex flex-col justify-between">
-      <header className="bg-gradient-to-r from-[#312E81] to-[#06B6D4] text-white px-6 py-4">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
+      <header className="bg-gradient-to-r from-[#312E81] to-[#06B6D4] text-white px-4 sm:px-6 py-4">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3">
           <div className="rounded-xl bg-white px-3 py-1.5 text-[#1E293B]">
             <KronosLogo />
           </div>
 
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-white/15 px-3.5 py-2 text-xs font-bold text-white backdrop-blur-xs hover:bg-white/25"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-white/15 px-3 py-2 text-xs font-bold text-white backdrop-blur-xs hover:bg-white/25"
           >
             <ArrowLeft className="h-4 w-4" />
             Panel Docente
@@ -252,10 +251,10 @@ export default function BiometricKioskPage() {
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-2xl flex-1 items-center justify-center px-6 py-10">
+      <main className="mx-auto flex w-full max-w-2xl flex-1 items-center justify-center px-4 sm:px-6 py-6 sm:py-10">
         {resultBanner ? (
           <div
-            className={`w-full rounded-3xl border-2 p-10 text-center shadow-sm space-y-4 transition-all ${
+            className={`w-full rounded-3xl border-2 p-6 sm:p-10 text-center shadow-sm space-y-4 transition-all ${
               resultBanner.tone === "PRESENT"
                 ? "border-emerald-300 bg-emerald-50 text-emerald-950"
                 : resultBanner.tone === "LATE"
@@ -281,7 +280,7 @@ export default function BiometricKioskPage() {
             </div>
 
             {resultBanner.studentName && (
-              <h1 className="text-3xl font-black tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight break-words">
                 {resultBanner.studentName}
               </h1>
             )}
@@ -292,7 +291,7 @@ export default function BiometricKioskPage() {
               </p>
             )}
 
-            <p className="text-xl font-extrabold">{resultBanner.statusLabel}</p>
+            <p className="text-lg sm:text-xl font-extrabold">{resultBanner.statusLabel}</p>
             <p className="text-sm font-semibold opacity-80">
               {resultBanner.detailText}
             </p>
@@ -301,17 +300,17 @@ export default function BiometricKioskPage() {
             </p>
           </div>
         ) : (
-          <div className="w-full rounded-3xl border border-slate-200/90 bg-white p-12 text-center shadow-2xs space-y-6">
+          <div className="w-full rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-12 text-center shadow-2xs space-y-6">
             <div
-              className={`mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-[#312E81] text-cyan-300 shadow-md ${
+              className={`mx-auto flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full bg-[#312E81] text-cyan-300 shadow-md ${
                 isReading ? "animate-pulse ring-8 ring-cyan-100" : ""
               }`}
             >
-              <Fingerprint className="h-14 w-14" />
+              <Fingerprint className="h-12 w-12 sm:h-14 sm:w-14" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-extrabold text-[#1E293B]">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-[#1E293B]">
                 Ponga la huella para registrar asistencia
               </h1>
               <p className="text-sm text-slate-500">

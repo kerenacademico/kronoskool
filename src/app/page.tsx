@@ -188,7 +188,7 @@ export default function TeacherDashboardPage() {
         })
       );
     } catch {
-      // Ignorar
+      // Ignorar errores de almacenamiento local
     }
   }, [
     selectedGroupId,
@@ -393,35 +393,43 @@ export default function TeacherDashboardPage() {
       }`}
     >
       <aside className="w-full lg:w-72 shrink-0 bg-[#312E81] text-white flex flex-col justify-between">
-        <div className="p-6 space-y-6">
-          <div className="rounded-2xl bg-white p-3 text-[#1E293B] shadow-2xs">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+          <div className="flex items-center justify-between gap-2 rounded-2xl bg-white p-2.5 sm:p-3 text-[#1E293B] shadow-2xs">
             <KronosLogo showSubtitle />
+            <button
+              type="button"
+              onClick={() => void handleResetDemo()}
+              title="Restaurar datos iniciales en Supabase"
+              className="lg:hidden rounded-xl border border-slate-200 bg-slate-50 p-2 text-[#312E81] transition hover:bg-slate-100"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </button>
           </div>
 
           <div>
-            <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-cyan-200/80">
+            <p className="hidden lg:block px-3 text-[11px] font-bold uppercase tracking-wider text-cyan-200/80">
               Menú Principal
             </p>
-            <nav className="mt-2.5 space-y-1.5">
+            <nav className="grid grid-cols-3 lg:grid-cols-1 gap-1.5 lg:mt-2.5">
               <button
                 type="button"
                 onClick={() => {
                   setNavSection("CLASSES");
                   setClassScreenMode("CARDS");
                 }}
-                className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-semibold transition ${
+                className={`flex items-center justify-center lg:justify-between rounded-xl px-2.5 py-2.5 lg:px-3.5 text-xs sm:text-sm font-semibold transition ${
                   navSection === "CLASSES"
                     ? "bg-white text-[#312E81] shadow-2xs"
                     : "text-indigo-100 hover:bg-indigo-950/50 hover:text-white"
                 }`}
               >
-                <span className="flex items-center gap-3">
+                <span className="flex items-center gap-1.5 sm:gap-3">
                   <Layers
-                    className={`h-4 w-4 ${
+                    className={`h-4 w-4 shrink-0 ${
                       navSection === "CLASSES" ? "text-[#06B6D4]" : "text-cyan-300"
                     }`}
                   />
-                  Clases
+                  <span>Clases</span>
                 </span>
               </button>
 
@@ -431,22 +439,22 @@ export default function TeacherDashboardPage() {
                   setNavSection("ALERTS");
                   setAlertScreenMode("CARDS");
                 }}
-                className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-semibold transition ${
+                className={`flex items-center justify-center lg:justify-between rounded-xl px-2.5 py-2.5 lg:px-3.5 text-xs sm:text-sm font-semibold transition ${
                   navSection === "ALERTS"
                     ? "bg-white text-[#312E81] shadow-2xs"
                     : "text-indigo-100 hover:bg-indigo-950/50 hover:text-white"
                 }`}
               >
-                <span className="flex items-center gap-3">
+                <span className="flex items-center gap-1.5 sm:gap-3">
                   <Bell
-                    className={`h-4 w-4 ${
+                    className={`h-4 w-4 shrink-0 ${
                       navSection === "ALERTS" ? "text-[#06B6D4]" : "text-cyan-300"
                     }`}
                   />
-                  Alertas
+                  <span>Alertas</span>
                 </span>
                 {totalAlertStudents > 0 && (
-                  <span className="rounded-full bg-red-500 px-2 py-0.5 text-[11px] font-extrabold text-white">
+                  <span className="ml-1 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] sm:text-[11px] font-extrabold text-white">
                     {totalAlertStudents}
                   </span>
                 )}
@@ -455,19 +463,19 @@ export default function TeacherDashboardPage() {
               <button
                 type="button"
                 onClick={() => setNavSection("EMERGENCY")}
-                className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-semibold transition ${
+                className={`flex items-center justify-center lg:justify-between rounded-xl px-2.5 py-2.5 lg:px-3.5 text-xs sm:text-sm font-semibold transition ${
                   navSection === "EMERGENCY"
                     ? "bg-white text-[#312E81] shadow-2xs"
                     : "text-indigo-100 hover:bg-indigo-950/50 hover:text-white"
                 }`}
               >
-                <span className="flex items-center gap-3">
+                <span className="flex items-center gap-1.5 sm:gap-3">
                   <Siren
-                    className={`h-4 w-4 ${
+                    className={`h-4 w-4 shrink-0 ${
                       navSection === "EMERGENCY" ? "text-[#06B6D4]" : "text-cyan-300"
                     }`}
                   />
-                  Emergencia Médica
+                  <span className="truncate">Salud</span>
                 </span>
               </button>
             </nav>
@@ -481,11 +489,11 @@ export default function TeacherDashboardPage() {
             }}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#06B6D4] px-3.5 py-2.5 text-xs font-extrabold text-slate-950 shadow-2xs transition hover:bg-cyan-400"
           >
-            <UserPlus className="h-4 w-4" />
+            <UserPlus className="h-4 w-4 shrink-0" />
             Matricular estudiante
           </button>
 
-          <div className="rounded-2xl border border-cyan-400/25 bg-indigo-950/50 p-4 space-y-2">
+          <div className="hidden lg:block rounded-2xl border border-cyan-400/25 bg-indigo-950/50 p-4 space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-cyan-300">
               <Database className="h-4 w-4" />
               Supabase PostgreSQL
@@ -498,7 +506,7 @@ export default function TeacherDashboardPage() {
           </div>
         </div>
 
-        <div className="border-t border-indigo-950/70 bg-indigo-950/50 p-4 flex items-center justify-between gap-2">
+        <div className="hidden lg:flex border-t border-indigo-950/70 bg-indigo-950/50 p-4 items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#06B6D4] text-xs font-black text-slate-950">
               <GraduationCap className="h-4 w-4" />
@@ -523,9 +531,9 @@ export default function TeacherDashboardPage() {
       </aside>
 
       <div className="flex-1 min-w-0">
-        <header className="bg-gradient-to-r from-[#312E81] to-[#06B6D4] text-white px-6 py-4">
-          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+        <header className="bg-gradient-to-r from-[#312E81] to-[#06B6D4] text-white px-4 sm:px-6 py-4">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-3">
               {navSection === "CLASSES" && classScreenMode === "ROSTER" && (
                 <button
                   type="button"
@@ -549,7 +557,7 @@ export default function TeacherDashboardPage() {
               )}
 
               <div>
-                <h1 className="text-lg font-extrabold tracking-tight">
+                <h1 className="text-base sm:text-lg font-extrabold tracking-tight">
                   {navSection === "EMERGENCY"
                     ? "Emergencia Médica y Auditoría"
                     : navSection === "ALERTS"
@@ -569,13 +577,13 @@ export default function TeacherDashboardPage() {
                       : "Estudiantes en alerta de este grupo."
                     : classScreenMode === "CARDS"
                     ? "Selecciona una clase para ver su listado y abrir el Kiosco."
-                    : `Docente: ${activeGroup.teacherName} • La asistencia se registra por huella en el Kiosco.`}
+                    : `Docente: ${activeGroup.teacherName} • Asistencia por huella en el Kiosco.`}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5">
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-cyan-950/35 px-3 py-1.5 text-xs font-bold text-cyan-100 ring-1 ring-white/25">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-cyan-950/35 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-cyan-100 ring-1 ring-white/25">
                 <Sparkles className="h-3.5 w-3.5 text-cyan-200" />
                 {minutesSaved} min salvados
               </span>
@@ -583,17 +591,17 @@ export default function TeacherDashboardPage() {
               <button
                 type="button"
                 onClick={() => setDarkMode((d) => !d)}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-[#312E81] shadow-2xs transition hover:bg-cyan-50"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-white px-2.5 sm:px-3 py-1.5 text-xs font-bold text-[#312E81] shadow-2xs transition hover:bg-cyan-50"
               >
                 {darkMode ? (
                   <>
                     <Sun className="h-3.5 w-3.5 text-[#F97316]" />
-                    Modo Claro
+                    <span>Claro</span>
                   </>
                 ) : (
                   <>
                     <Moon className="h-3.5 w-3.5 text-[#312E81]" />
-                    Modo Oscuro
+                    <span>Oscuro</span>
                   </>
                 )}
               </button>
@@ -601,7 +609,7 @@ export default function TeacherDashboardPage() {
           </div>
         </header>
 
-        <main className="mx-auto max-w-5xl space-y-6 px-6 py-7">
+        <main className="mx-auto max-w-5xl space-y-5 sm:space-y-6 px-4 sm:px-6 py-5 sm:py-7">
           {navSection === "CLASSES" && classScreenMode === "CARDS" && (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {CLASS_GROUPS.map((grp) => {
@@ -685,52 +693,50 @@ export default function TeacherDashboardPage() {
           {navSection === "CLASSES" && classScreenMode === "ROSTER" && (
             <div className="space-y-5">
               <div
-                className={`rounded-2xl border p-5 space-y-4 ${
+                className={`rounded-2xl border p-4 sm:p-5 space-y-4 ${
                   darkMode
                     ? "border-slate-800 bg-slate-900"
                     : "border-slate-200/90 bg-white shadow-2xs"
                 }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-bold ${
-                        isCurrentGroupOpen
-                          ? "bg-emerald-100 text-emerald-800"
-                          : "bg-slate-200 text-slate-700"
-                      }`}
-                    >
-                      {isCurrentGroupOpen
-                        ? "Clase abierta (registro activo en Kiosco)"
-                        : "Clase cerrada (habilitada excusa manual)"}
-                    </span>
-                  </div>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-bold ${
+                      isCurrentGroupOpen
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-slate-200 text-slate-700"
+                    }`}
+                  >
+                    {isCurrentGroupOpen
+                      ? "Clase abierta (registro activo en Kiosco)"
+                      : "Clase cerrada (habilitada excusa manual)"}
+                  </span>
 
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex w-full sm:w-auto flex-wrap items-center gap-2">
                     <button
                       type="button"
                       onClick={() => {
                         setEditingStudent(null);
                         setEnrollmentModalOpen(true);
                       }}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#06B6D4] px-3.5 py-2 text-xs font-extrabold text-slate-950 shadow-2xs transition hover:bg-cyan-400"
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#06B6D4] px-3.5 py-2 text-xs font-extrabold text-slate-950 shadow-2xs transition hover:bg-cyan-400"
                     >
                       <UserPlus className="h-4 w-4" />
-                      Matricular alumno
+                      Matricular
                     </button>
 
                     <Link
                       href="/kiosk"
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-[#F97316] px-3.5 py-2 text-xs font-extrabold text-white shadow-2xs transition hover:bg-orange-600"
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#F97316] px-3.5 py-2 text-xs font-extrabold text-white shadow-2xs transition hover:bg-orange-600"
                     >
                       <MonitorSmartphone className="h-4 w-4" />
-                      Ir a Pantalla Kiosco
+                      Kiosco
                     </Link>
 
                     <button
                       type="button"
                       onClick={() => void handleToggleClassAttendance()}
-                      className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold text-white transition ${
+                      className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-xs font-bold text-white transition ${
                         isCurrentGroupOpen
                           ? "bg-amber-600 hover:bg-amber-700"
                           : "bg-[#312E81] hover:bg-indigo-900"
@@ -739,7 +745,7 @@ export default function TeacherDashboardPage() {
                       {isCurrentGroupOpen ? (
                         <>
                           <Lock className="h-3.5 w-3.5" />
-                          Cerrar clase (marcar faltas)
+                          Cerrar clase
                         </>
                       ) : (
                         <>
@@ -752,13 +758,13 @@ export default function TeacherDashboardPage() {
                 </div>
 
                 <div
-                  className={`flex flex-wrap items-center justify-between gap-4 border-t pt-3 text-xs ${
+                  className={`flex flex-wrap items-center justify-between gap-3 border-t pt-3 text-xs ${
                     darkMode ? "border-slate-800" : "border-slate-100"
                   }`}
                 >
                   <div className="flex flex-wrap items-center gap-3">
                     <label className="flex items-center gap-1.5 font-semibold">
-                      Hora inicio:
+                      Inicio:
                       <input
                         type="time"
                         value={startTime}
@@ -768,7 +774,7 @@ export default function TeacherDashboardPage() {
                     </label>
 
                     <label className="flex items-center gap-1.5 font-semibold">
-                      Tolerancia (min):
+                      Tolerancia:
                       <input
                         type="number"
                         min={0}
@@ -781,7 +787,7 @@ export default function TeacherDashboardPage() {
 
                     <label className="flex items-center gap-1.5 font-semibold">
                       <Clock className="h-3.5 w-3.5 text-[#06B6D4]" />
-                      Hora de prueba:
+                      Hora:
                       <input
                         type="time"
                         value={clockTime}
@@ -798,7 +804,7 @@ export default function TeacherDashboardPage() {
                         : "bg-cyan-50 text-[#312E81] border border-cyan-200"
                     }`}
                   >
-                    {isLateNow ? "Si llega ahora: Impuntual" : "Si llega ahora: Puntual"}
+                    {isLateNow ? "Ahora: Impuntual" : "Ahora: Puntual"}
                   </span>
                 </div>
               </div>
@@ -810,7 +816,7 @@ export default function TeacherDashboardPage() {
                     : "border-slate-200/90 bg-white shadow-2xs"
                 }`}
               >
-                <div className="p-5 pb-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="p-4 sm:p-5 pb-4 flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <h2 className="text-sm font-extrabold">
                       Estudiantes de {activeGroup.name} ({groupStudents.length})
@@ -822,7 +828,7 @@ export default function TeacherDashboardPage() {
                     >
                       {isCurrentGroupOpen
                         ? "El alumno registra su huella en el Kiosco al llegar."
-                        : "Clase cerrada: puedes registrar excusa/asistencia manual en alumnos con inasistencia."}
+                        : "Clase cerrada: puedes registrar excusa/asistencia manual en inasistencias."}
                     </p>
                   </div>
 
@@ -843,145 +849,251 @@ export default function TeacherDashboardPage() {
                     No se encontraron estudiantes en {activeGroup.name}.
                   </p>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse text-left text-xs">
-                      <thead>
-                        <tr
-                          className={`border-y text-[11px] font-bold uppercase tracking-wider ${
-                            darkMode
-                              ? "border-slate-800 bg-slate-950/60 text-slate-400"
-                              : "border-slate-200/80 bg-[#F4F7FA] text-slate-500"
-                          }`}
-                        >
-                          <th className="py-3 pl-5 pr-3">Estudiante</th>
-                          <th className="px-3 py-3">Documento</th>
-                          <th className="px-3 py-3">Estado hoy</th>
-                          <th className="px-3 py-3">Historial / RH</th>
-                          <th className="py-3 pl-3 pr-5 text-right">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody
-                        className={`divide-y ${
-                          darkMode ? "divide-slate-800" : "divide-slate-100"
-                        }`}
-                      >
-                        {groupStudents.map((student) => {
-                          const badge = getAttendanceBadge(student.todayStatus);
-                          const StatusIcon = badge.Icon;
-                          const canExcuseAfterClose =
-                            !isCurrentGroupOpen &&
-                            (student.todayStatus === "ABSENT" || !student.todayStatus);
+                  <>
+                    <div className="space-y-3 px-4 pb-4 md:hidden">
+                      {groupStudents.map((student) => {
+                        const badge = getAttendanceBadge(student.todayStatus);
+                        const StatusIcon = badge.Icon;
+                        const canExcuseAfterClose =
+                          !isCurrentGroupOpen &&
+                          (student.todayStatus === "ABSENT" || !student.todayStatus);
 
-                          return (
-                            <tr
-                              key={student.id}
-                              onClick={() => setDetailStudent(student)}
-                              className={`cursor-pointer transition ${
-                                darkMode
-                                  ? "hover:bg-slate-800/60"
-                                  : "hover:bg-slate-50/90"
-                              }`}
-                            >
-                              <td className="py-3.5 pl-5 pr-3">
-                                <div className="flex items-center gap-3">
-                                  <div
-                                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-extrabold ${
-                                      darkMode
-                                        ? "bg-cyan-500/15 text-cyan-300"
-                                        : "bg-cyan-50 text-[#312E81]"
+                        return (
+                          <div
+                            key={student.id}
+                            onClick={() => setDetailStudent(student)}
+                            className={`cursor-pointer rounded-2xl border p-3.5 space-y-3 transition ${
+                              darkMode
+                                ? "border-slate-800 bg-slate-950/60"
+                                : "border-slate-200 bg-[#F4F7FA]/70"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div
+                                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-extrabold ${
+                                    darkMode
+                                      ? "bg-cyan-500/15 text-cyan-300"
+                                      : "bg-cyan-50 text-[#312E81]"
+                                  }`}
+                                >
+                                  {getInitials(student.fullName)}
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="truncate text-sm font-bold">
+                                    {student.fullName}
+                                  </p>
+                                  <p
+                                    className={`text-[11px] ${
+                                      darkMode ? "text-slate-400" : "text-slate-500"
                                     }`}
                                   >
-                                    {getInitials(student.fullName)}
-                                  </div>
-                                  <span className="text-sm font-bold">
-                                    {student.fullName}
-                                  </span>
+                                    {student.documentType} {student.documentNumber} • RH{" "}
+                                    <strong className="text-[#F97316]">
+                                      {student.medical.bloodType}
+                                    </strong>
+                                  </p>
                                 </div>
-                              </td>
+                              </div>
 
-                              <td
-                                className={`px-3 py-3.5 font-medium ${
-                                  darkMode ? "text-slate-300" : "text-slate-600"
-                                }`}
+                              <span
+                                className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-extrabold ${badge.pillClass}`}
                               >
-                                {student.documentType} {student.documentNumber}
-                              </td>
+                                <StatusIcon className="h-3 w-3" />
+                                {badge.label}
+                              </span>
+                            </div>
 
-                              <td className="px-3 py-3.5">
-                                <span
-                                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-extrabold ${badge.pillClass}`}
+                            <div
+                              className="flex flex-wrap items-center justify-end gap-1.5 border-t border-slate-200/70 pt-2.5"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {canExcuseAfterClose && (
+                                <button
+                                  type="button"
+                                  onClick={() => setExcuseStudent(student)}
+                                  className="inline-flex items-center gap-1 rounded-xl bg-[#312E81] px-2.5 py-1.5 text-xs font-bold text-white"
                                 >
-                                  <StatusIcon className="h-3.5 w-3.5" />
-                                  {badge.label}
-                                  {student.checkInTime ? ` • ${student.checkInTime}` : ""}
-                                </span>
-                              </td>
+                                  <FileCheck className="h-3.5 w-3.5 text-cyan-300" />
+                                  Excusa
+                                </button>
+                              )}
 
-                              <td
-                                className={`px-3 py-3.5 ${
-                                  darkMode ? "text-slate-400" : "text-slate-500"
+                              <button
+                                type="button"
+                                onClick={() => setMedicalStudent(student)}
+                                className="inline-flex items-center gap-1 rounded-xl border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-xs font-semibold text-[#F97316]"
+                              >
+                                <HeartPulse className="h-3.5 w-3.5" />
+                                Salud
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingStudent(student);
+                                  setEnrollmentModalOpen(true);
+                                }}
+                                aria-label="Editar matrícula"
+                                className="rounded-xl border border-slate-200 bg-white p-1.5 text-slate-600"
+                              >
+                                <Pencil className="h-3.5 w-3.5" />
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => void handleDeleteStudent(student.id)}
+                                aria-label="Eliminar estudiante"
+                                className="rounded-xl border border-red-200 bg-red-50 p-1.5 text-red-600"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="hidden md:block overflow-x-auto">
+                      <table className="w-full border-collapse text-left text-xs">
+                        <thead>
+                          <tr
+                            className={`border-y text-[11px] font-bold uppercase tracking-wider ${
+                              darkMode
+                                ? "border-slate-800 bg-slate-950/60 text-slate-400"
+                                : "border-slate-200/80 bg-[#F4F7FA] text-slate-500"
+                            }`}
+                          >
+                            <th className="py-3 pl-5 pr-3">Estudiante</th>
+                            <th className="px-3 py-3">Documento</th>
+                            <th className="px-3 py-3">Estado hoy</th>
+                            <th className="px-3 py-3">Historial / RH</th>
+                            <th className="py-3 pl-3 pr-5 text-right">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody
+                          className={`divide-y ${
+                            darkMode ? "divide-slate-800" : "divide-slate-100"
+                          }`}
+                        >
+                          {groupStudents.map((student) => {
+                            const badge = getAttendanceBadge(student.todayStatus);
+                            const StatusIcon = badge.Icon;
+                            const canExcuseAfterClose =
+                              !isCurrentGroupOpen &&
+                              (student.todayStatus === "ABSENT" || !student.todayStatus);
+
+                            return (
+                              <tr
+                                key={student.id}
+                                onClick={() => setDetailStudent(student)}
+                                className={`cursor-pointer transition ${
+                                  darkMode
+                                    ? "hover:bg-slate-800/60"
+                                    : "hover:bg-slate-50/90"
                                 }`}
                               >
-                                Retardos: <strong>{student.lateCount}</strong> • Faltas:{" "}
-                                <strong>{student.absentCount}</strong> • RH:{" "}
-                                <strong className="text-[#F97316]">
-                                  {student.medical.bloodType}
-                                </strong>
-                              </td>
+                                <td className="py-3.5 pl-5 pr-3">
+                                  <div className="flex items-center gap-3">
+                                    <div
+                                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-extrabold ${
+                                        darkMode
+                                          ? "bg-cyan-500/15 text-cyan-300"
+                                          : "bg-cyan-50 text-[#312E81]"
+                                      }`}
+                                    >
+                                      {getInitials(student.fullName)}
+                                    </div>
+                                    <span className="text-sm font-bold">
+                                      {student.fullName}
+                                    </span>
+                                  </div>
+                                </td>
 
-                              <td
-                                className="py-3.5 pl-3 pr-5 text-right"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <div className="inline-flex items-center justify-end gap-1.5">
-                                  {canExcuseAfterClose && (
+                                <td
+                                  className={`px-3 py-3.5 font-medium ${
+                                    darkMode ? "text-slate-300" : "text-slate-600"
+                                  }`}
+                                >
+                                  {student.documentType} {student.documentNumber}
+                                </td>
+
+                                <td className="px-3 py-3.5">
+                                  <span
+                                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-extrabold ${badge.pillClass}`}
+                                  >
+                                    <StatusIcon className="h-3.5 w-3.5" />
+                                    {badge.label}
+                                    {student.checkInTime ? ` • ${student.checkInTime}` : ""}
+                                  </span>
+                                </td>
+
+                                <td
+                                  className={`px-3 py-3.5 ${
+                                    darkMode ? "text-slate-400" : "text-slate-500"
+                                  }`}
+                                >
+                                  Retardos: <strong>{student.lateCount}</strong> • Faltas:{" "}
+                                  <strong>{student.absentCount}</strong> • RH:{" "}
+                                  <strong className="text-[#F97316]">
+                                    {student.medical.bloodType}
+                                  </strong>
+                                </td>
+
+                                <td
+                                  className="py-3.5 pl-3 pr-5 text-right"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <div className="inline-flex items-center justify-end gap-1.5">
+                                    {canExcuseAfterClose && (
+                                      <button
+                                        type="button"
+                                        onClick={() => setExcuseStudent(student)}
+                                        className="inline-flex items-center gap-1 rounded-xl bg-[#312E81] px-2.5 py-1.5 text-xs font-bold text-white shadow-2xs transition hover:bg-indigo-900"
+                                      >
+                                        <FileCheck className="h-3.5 w-3.5 text-cyan-300" />
+                                        Excusa
+                                      </button>
+                                    )}
+
                                     <button
                                       type="button"
-                                      onClick={() => setExcuseStudent(student)}
-                                      className="inline-flex items-center gap-1 rounded-xl bg-[#312E81] px-2.5 py-1.5 text-xs font-bold text-white shadow-2xs transition hover:bg-indigo-900"
+                                      onClick={() => setMedicalStudent(student)}
+                                      className="inline-flex items-center gap-1 rounded-xl border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-xs font-semibold text-[#F97316] hover:bg-orange-100"
                                     >
-                                      <FileCheck className="h-3.5 w-3.5 text-cyan-300" />
-                                      Excusa
+                                      <HeartPulse className="h-3.5 w-3.5" />
+                                      Salud
                                     </button>
-                                  )}
 
-                                  <button
-                                    type="button"
-                                    onClick={() => setMedicalStudent(student)}
-                                    className="inline-flex items-center gap-1 rounded-xl border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-xs font-semibold text-[#F97316] hover:bg-orange-100"
-                                  >
-                                    <HeartPulse className="h-3.5 w-3.5" />
-                                    Salud
-                                  </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setEditingStudent(student);
+                                        setEnrollmentModalOpen(true);
+                                      }}
+                                      title="Editar matrícula"
+                                      className="rounded-xl border border-slate-200 bg-white p-1.5 text-slate-600 hover:bg-slate-50"
+                                    >
+                                      <Pencil className="h-3.5 w-3.5" />
+                                    </button>
 
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      setEditingStudent(student);
-                                      setEnrollmentModalOpen(true);
-                                    }}
-                                    title="Editar matrícula"
-                                    className="rounded-xl border border-slate-200 bg-white p-1.5 text-slate-600 hover:bg-slate-50"
-                                  >
-                                    <Pencil className="h-3.5 w-3.5" />
-                                  </button>
-
-                                  <button
-                                    type="button"
-                                    onClick={() => void handleDeleteStudent(student.id)}
-                                    title="Eliminar estudiante"
-                                    className="rounded-xl border border-red-200 bg-red-50 p-1.5 text-red-600 hover:bg-red-100"
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5" />
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => void handleDeleteStudent(student.id)}
+                                      title="Eliminar estudiante"
+                                      className="rounded-xl border border-red-200 bg-red-50 p-1.5 text-red-600 hover:bg-red-100"
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -1071,7 +1183,7 @@ export default function TeacherDashboardPage() {
 
           {navSection === "ALERTS" && alertScreenMode === "STUDENTS" && (
             <div
-              className={`rounded-2xl border p-5 space-y-4 ${
+              className={`rounded-2xl border p-4 sm:p-5 space-y-4 ${
                 darkMode
                   ? "border-slate-800 bg-slate-900"
                   : "border-slate-200/90 bg-white shadow-2xs"
@@ -1101,7 +1213,7 @@ export default function TeacherDashboardPage() {
                               {student.fullName}
                             </p>
                             <span className="rounded-full bg-red-600 px-2.5 py-0.5 text-[10px] font-extrabold text-white">
-                              EN ALERTA — Clic para ver días
+                              EN ALERTA
                             </span>
                           </div>
                           <p className="mt-0.5 text-xs text-red-800">
